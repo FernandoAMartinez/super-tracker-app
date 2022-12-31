@@ -1,17 +1,19 @@
 ﻿@inherits LayoutComponentBase
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-
-    <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+<Layout Style="min-height: 100vh; ">
+    <SiderLayout/>
+    <Layout>
+        <HeaderLayout/>
+        <Content Style="margin:0 16px;">
+            <Breadcrumb Style="margin:16px 0;">
+                <BreadcrumbItem>User</BreadcrumbItem>
+                <BreadcrumbItem>Bill</BreadcrumbItem>
+            </Breadcrumb>
+            
             @Body
-        </article>
-    </main>
-</div>
+        </Content>
+        <Footer Style="text-align:center ">Ant Design ©2018 Created by Ant UED</Footer>
+    </Layout>
+</Layout>
+
+

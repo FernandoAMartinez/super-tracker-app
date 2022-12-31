@@ -1,0 +1,8 @@
+﻿<Header Style=" padding: 0 ;">
+    <PageHeader Class="site-page-header" Title="@_title" Subtitle="Custom `OnBack` callback" OnBack="@(()=> { Console.WriteLine("OnBack");})" />
+</Header>
+@code {
+    private string _title = "Page";
+
+    RenderFragment icon =@<Icon Type="backward" />;
+}
