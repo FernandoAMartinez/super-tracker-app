@@ -1,19 +1,57 @@
 ﻿@inherits LayoutComponentBase
-
 <Layout Style="min-height: 100vh; ">
-    <SiderLayout/>
-    <Layout>
-        <HeaderLayout/>
-        <Content Style="margin:0 16px;">
-            <Breadcrumb Style="margin:16px 0;">
-                <BreadcrumbItem>User</BreadcrumbItem>
-                <BreadcrumbItem>Bill</BreadcrumbItem>
-            </Breadcrumb>
-            
+    <Sider Collapsible Collapsed=@collapsed OnCollapse=@onCollapse>
+        <div class="logo" />
+        <Menu Theme="MenuTheme.Dark" DefaultSelectedKeys=@(new[]{"1"}) Mode="MenuMode.Inline">
+            <MenuItem Key="1" RouterLink="shopping">
+                <Icon Type="shopping" Theme="outline" />
+                <span>Shopping List</span>
+            </MenuItem>
+
+            <MenuItem Key="2" RouterLink="calendar">
+                <Icon Type="calendar" Theme="outline" />
+                <span>Calendar</span>
+            </MenuItem>
+
+            <MenuItem Key="3" RouterLink="counter">
+                <Icon Type="desktop" Theme="outline" />
+                <span>Counter</span>
+            </MenuItem>
+
+            <MenuItem Key="4">
+                <Icon Type="desktop" Theme="outline" />
+                <span>Option 2</span>
+            </MenuItem>
+
+            <MenuItem Key="5">
+                <Icon Type="file" Theme="outline" />
+            </MenuItem>
+        </Menu>
+    </Sider>
+    <Layout Class="site-layout">
+        <Content Class="p-3">
             @Body
         </Content>
-        <Footer Style="text-align:center ">Ant Design ©2018 Created by Ant UED</Footer>
+        <Footer Style="text-align:center ">SuperTracker © @DateTime.Now.Year</Footer>
     </Layout>
 </Layout>
 
 
+@code {
+    bool collapsed;
+
+    void onCollapse(bool collapsed) => this.collapsed = collapsed;
+}
+
+
+<style>
+    #components-layout-demo-side .logo {
+        height: 32px;
+        background: rgba(255, 255, 255, 0.2);
+        margin: 16px;
+    }
+
+    .site-layout .site-layout-background {
+        background: #fff;
+    }
+</style>
