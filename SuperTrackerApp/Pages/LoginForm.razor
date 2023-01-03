@@ -1,0 +1,70 @@
+﻿@page "/login"
+
+@inject IMessageService _message
+@using System.Text.Json;
+
+<Form Loading="loading" Model="@model"
+      OnFinish="OnFinish" OnFinishFailed="OnFinishFailed">
+    <FormItem Label="Email">
+        <Input Type="email" @bind-Value="@context.Email" />
+    </FormItem>
+    <FormItem Label="Password">
+        <InputPassword @bind-Value="@context.Password" />
+    </FormItem>
+    <FormItem WrapperColOffset="8" WrapperColSpan="16">
+        <Checkbox @bind-Value="context.RememberMe">Remember me</Checkbox>
+    </FormItem>
+    <FormItem WrapperColOffset="8" WrapperColSpan="16">
+        <Button Type="@ButtonType.Primary" HtmlType="submit" OnClick="LoginWithCredentials">
+            Login
+        </Button>
+    </FormItem>
+</Form>
+
+<div style="margin-top: 16px">
+    Loading state：
+    <Switch Checked=loading OnChange=toggle />
+</div>
+@code
+{
+
+    private UserModel model = new ();
+
+    private async Task LoginWithCredentials()
+    {
+        loading = !loading;
+        //await Task.Delay(1000);
+
+
+        string key = $"updatable-{DateTime.Now.Ticks}";
+        var config = new MessageConfig()
+        {
+            Content = "Validating credentials...",
+            Key = key
+        };
+        await _message.Loading(config);
+
+        //await Task.Delay(2000);
+
+        config.Content = "Authorized";
+        config.Duration = 3;
+        await _message.Success(config);
+        loading = !loading;
+    }
+
+    private void OnFinish(EditContext editContext)
+    {
+        //_message.Success(JsonSerializer.Serialize(model));
+        //Console.WriteLine($"Success:{JsonSerializer.Serialize(model)}");
+    }
+
+    private void OnFinishFailed(EditContext editContext)
+    {
+        //_message.Error(JsonSerializer.Serialize(model));
+        //Console.WriteLine($"Failed:{JsonSerializer.Serialize(model)}");
+    }
+
+    bool loading = false;
+
+    void toggle(bool value) => loading = value;
+}

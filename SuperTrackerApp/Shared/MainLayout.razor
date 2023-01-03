@@ -2,7 +2,7 @@
 <Layout Style="min-height: 100vh; ">
     <Sider Collapsible Collapsed=@collapsed OnCollapse=@onCollapse>
         <div class="logo" />
-        <Menu Theme="MenuTheme.Dark" DefaultSelectedKeys=@(new[]{"1"}) Mode="MenuMode.Inline">
+        <Menu Theme="MenuTheme.Dark" DefaultSelectedKeys=@(new[]{"6"}) Mode="MenuMode.Inline">
             <MenuItem Key="1" RouterLink="shopping">
                 <Icon Type="shopping" Theme="outline" />
                 <span>Shopping List</span>
@@ -13,18 +13,9 @@
                 <span>Calendar</span>
             </MenuItem>
 
-            <MenuItem Key="3" RouterLink="counter">
-                <Icon Type="desktop" Theme="outline" />
-                <span>Counter</span>
-            </MenuItem>
-
-            <MenuItem Key="4">
-                <Icon Type="desktop" Theme="outline" />
-                <span>Option 2</span>
-            </MenuItem>
-
-            <MenuItem Key="5">
-                <Icon Type="file" Theme="outline" />
+            <MenuItem Key="3" RouterLink="login">
+                <Icon Type="login" Theme="outline" />
+                <span>Login</span>
             </MenuItem>
         </Menu>
     </Sider>
