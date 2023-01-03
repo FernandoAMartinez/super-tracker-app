@@ -1,7 +1,6 @@
 ﻿@page "/login"
-
 @inject IMessageService _message
-@using System.Text.Json;
+
 
 <Form Loading="loading" Model="@model"
       OnFinish="OnFinish" OnFinishFailed="OnFinishFailed">
@@ -15,53 +14,51 @@
         <Checkbox @bind-Value="context.RememberMe">Remember me</Checkbox>
     </FormItem>
     <FormItem WrapperColOffset="8" WrapperColSpan="16">
-        <Button Type="@ButtonType.Primary" HtmlType="submit" OnClick="LoginWithCredentials">
+        <Button Type="@ButtonType.Primary" HtmlType="submit">
             Login
         </Button>
     </FormItem>
 </Form>
 
-<div style="margin-top: 16px">
-    Loading state：
-    <Switch Checked=loading OnChange=toggle />
-</div>
 @code
 {
 
-    private UserModel model = new ();
+    private UserModel model = new();
 
-    private async Task LoginWithCredentials()
+    private MessageConfig _config;
+
+    private async Task OnFinish(EditContext editContext)
     {
-        loading = !loading;
-        //await Task.Delay(1000);
-
-
-        string key = $"updatable-{DateTime.Now.Ticks}";
-        var config = new MessageConfig()
+        toggle(true);
+        _config = new()
         {
             Content = "Validating credentials...",
-            Key = key
+            Key = $"updatable-{DateTime.Now.Ticks}"
         };
-        await _message.Loading(config);
 
-        //await Task.Delay(2000);
+        await _message.Loading(_config);
 
-        config.Content = "Authorized";
-        config.Duration = 3;
-        await _message.Success(config);
-        loading = !loading;
+        _config.Content = "Authorized";
+        _config.Duration = 3;
+
+        await _message.Success(_config);
+
+        toggle(false);
     }
 
-    private void OnFinish(EditContext editContext)
+    private async Task OnFinishFailed(EditContext editContext)
     {
-        //_message.Success(JsonSerializer.Serialize(model));
-        //Console.WriteLine($"Success:{JsonSerializer.Serialize(model)}");
-    }
+        _config = new() { Key = $"updatable-{DateTime.Now.Ticks}" };
 
-    private void OnFinishFailed(EditContext editContext)
-    {
-        //_message.Error(JsonSerializer.Serialize(model));
-        //Console.WriteLine($"Failed:{JsonSerializer.Serialize(model)}");
+        if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Password))
+            _config.Content = "Complete the required fields.";
+        else
+            _config.Content = "Not Authorized";
+
+        _config.Duration = 3;
+        await _message.Error(_config);
+
+        toggle(false);
     }
 
     bool loading = false;
